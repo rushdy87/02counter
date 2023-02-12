@@ -1,18 +1,21 @@
-import { createStore } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 
-const initState = { counter: 0, showCounter: true };
+import counterReducer from './counterSlice';
+import authReducer from './authSlice';
 
-const couenterReducer = (state = initState, action) => {
-  switch (action.type) {
-    case 'increase':
-      return { ...state, counter: state.counter + action.payload };
-    case 'decrease':
-      return { ...state, counter: state.counter - action.payload };
-    case 'show/hide':
-      return { ...state, showCounter: action.payload };
-    default:
-      return state;
-  }
-};
+export const store = configureStore({
+  reducer: {
+    counter: counterReducer,
+    auth: authReducer,
+  },
+});
 
-export const store = createStore(couenterReducer);
+export { increase, decrease } from './counterSlice';
+export { logIn, logOut } from './authSlice';
+
+/*
+
+- configureStore creates a Redux store, and also automatically configure the Redux DevTools extension so that you
+  can inspect the store while developing
+
+ */

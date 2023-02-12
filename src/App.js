@@ -1,45 +1,40 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { increase, decrease, logIn, logOut } from './store';
 import './App.css';
 
 function App() {
   const [step, setStep] = useState(1);
   const disptch = useDispatch();
-  const { counter, showCounter } = useSelector((state) => state);
+  const { counter } = useSelector((state) => state.counter);
+  const { isLoggedIn } = useSelector((state) => state.auth);
 
-  const increase = () => {
-    const action = {
-      type: 'increase',
-      payload: step,
-    };
-    disptch(action);
+  const handleIncrease = () => {
+    disptch(increase(step));
   };
-  const decrease = () => {
-    const action = {
-      type: 'decrease',
-      payload: step,
-    };
-    disptch(action);
+  const handleDecrease = () => {
+    disptch(decrease(step));
   };
 
   const handleChange = (event) => {
     setStep(+event.target.value);
   };
 
-  const toggleCounter = () => {
-    const action = {
-      type: 'show/hide',
-      payload: !showCounter,
-    };
-    disptch(action);
+  const toggloLog = () => {
+    if (isLoggedIn) {
+      disptch(logOut());
+    } else {
+      disptch(logIn());
+    }
   };
 
   return (
     <div className="App">
       <h1>Hello Redux Basic</h1>
-      <div className="counter">Counter: {counter}</div>
-      {showCounter && (
+      {isLoggedIn && (
         <>
+          <div className="counter">Counter: {counter}</div>
+
           <div>
             <select
               className="btn"
@@ -62,20 +57,18 @@ function App() {
             </select>
           </div>
           <div>
-            <button className="btn" onClick={increase}>
+            <button className="btn" onClick={handleIncrease}>
               increase +
             </button>
-            <button className="btn" onClick={decrease}>
+            <button className="btn" onClick={handleDecrease}>
               decrease -
             </button>
           </div>
         </>
       )}
-      <div>
-        <button className="btn" onClick={toggleCounter}>
-          Hide/Show Counter Number
-        </button>
-      </div>
+      <button className="btn" onClick={toggloLog}>
+        {isLoggedIn ? 'Logout' : 'Login'}
+      </button>
     </div>
   );
 }
