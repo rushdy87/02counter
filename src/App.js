@@ -9,11 +9,15 @@ function App() {
   const { counter } = useSelector((state) => state.counter);
   const { isLoggedIn } = useSelector((state) => state.auth);
 
+  const counterHandler = (fn) => {
+    disptch(fn(step));
+  };
+
   const handleIncrease = () => {
-    disptch(increase(step));
+    counterHandler(increase);
   };
   const handleDecrease = () => {
-    disptch(decrease(step));
+    counterHandler(decrease);
   };
 
   const handleChange = (event) => {

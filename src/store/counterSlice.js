@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { logOut } from './authSlice';
 
 const initState = { counter: 0 };
 
@@ -13,6 +14,11 @@ const counterSlice = createSlice({
     decrease: (state, action) => {
       state.counter -= action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(logOut, (state, action) => {
+      state.counter = 0;
+    });
   },
 });
 
